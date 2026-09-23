@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Statistik pengunjung · Omniworld</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-track="off">
+  <div class="topbar">
+    <div>Dashboard internal</div>
+    <nav><a href="/">Kembali ke landing</a></nav>
+  </div>
+  <header class="nav">
+    <a class="brand" href="/">
+      <div class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.2 7-11.2A7 7 0 0 0 5 9.8C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.2"/></svg></div>
+      <div class="brand-name">Omniworld<span>Statistik</span></div>
+    </a>
+  </header>
+  <div class="lock" id="gate">
+    <div class="kicker">Akses meja</div>
+    <h2>Lihat jumlah pengunjung</h2>
+    <p class="lead">Sandi bawaan: <code>omniworld</code></p>
+    <form id="gate-form" style="margin-top:18px">
+      <label for="pw">Kata sandi</label>
+      <input id="pw" type="password" autocomplete="current-password" />
+      <button class="btn" type="submit" style="margin-top:14px">Buka dashboard</button>
+      <p class="note" id="gate-err"></p>
+    </form>
+  </div>
+  <section id="dash" class="hidden">
+    <div class="wrap">
+      <div class="kicker">Omniworld.shop</div>
+      <h2>Berapa orang yang masuk ke web.</h2>
+      <div class="stats-grid">
+        <div class="stat"><div class="l">Sesi unik</div><div class="n" id="n-sessions">—</div><div class="l">perkiraan orang yang masuk</div></div>
+        <div class="stat"><div class="l">Page views</div><div class="n" id="n-views">—</div><div class="l">semua pemuatan halaman</div></div>
+        <div class="stat"><div class="l">Klik alokasi</div><div class="n" id="n-inquiry">—</div><div class="l">tombol ajukan alokasi</div></div>
+        <div class="stat"><div class="l">Klik harga</div><div class="n" id="n-harga">—</div><div class="l">tautan papan harga</div></div>
+      </div>
+    </div>
+  </section>
+  <script src="js/tracker.js"></script>
+  <script>
+    const PASS = "omniworld";
+    const gate = document.getElementById("gate");
+    const dash = document.getElementById("dash");
+    async function openDash() {
+      gate.classList.add("hidden");
+      dash.classList.remove("hidden");
+      const snap = await OmniTracker.snapshot();
+      document.getElementById("n-sessions").textContent = Number(snap.sessions).toLocaleString("id-ID");
+      document.getElementById("n-views").textContent = Number(snap.views).toLocaleString("id-ID");
+      document.getElementById("n-inquiry").textContent = Number(snap.inquiry).toLocaleString("id-ID");
+      document.getElementById("n-harga").textContent = Number(snap.harga).toLocaleString("id-ID");
+    }
+    if (sessionStorage.getItem("ow_stats") === "1") openDash();
+    document.getElementById("gate-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (document.getElementById("pw").value === PASS) { sessionStorage.setItem("ow_stats", "1"); openDash(); }
+      else document.getElementById("gate-err").textContent = "Kata sandi salah.";
+    });
+  </script>
+</body>
+</html>
