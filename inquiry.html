@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ajukan alokasi · Omniworld</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div>Rumah dagang sarang walet · Indonesia</div>
+    <nav><a href="/">Kembali ke rumah</a></nav>
+  </div>
+  <header class="nav">
+    <a class="brand" href="/">
+      <div class="mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s7-6.2 7-11.2A7 7 0 0 0 5 9.8C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.2"/></svg></div>
+      <div class="brand-name">Omniworld<span>Bird's Nest</span></div>
+    </a>
+    <a class="btn ghost" href="/">Rumah</a>
+  </header>
+  <section>
+    <div class="wrap" style="max-width:820px">
+      <div class="kicker">Alokasi</div>
+      <h2>Sebut dapur, hadiah, atau pelabuhan.</h2>
+      <p class="lead">Satu halaman. Kami membalas dengan grade, volume, dan jendela kirim.</p>
+      <form class="form" id="alloc-form">
+        <div><label for="name">Nama</label><input id="name" name="name" required /></div>
+        <div><label for="company">Perusahaan / hotel</label><input id="company" name="company" /></div>
+        <div><label for="email">Email</label><input id="email" name="email" type="email" required /></div>
+        <div><label for="whatsapp">WhatsApp</label><input id="whatsapp" name="whatsapp" placeholder="+62…" /></div>
+        <div><label for="desk">Meja</label><select id="desk" name="desk"><option value="hotel">Hotel bintang lima</option><option value="private">Meja langsung / pribadi</option><option value="importer">Importir Tiongkok / Hong Kong</option></select></div>
+        <div><label for="grade">Grade</label><select id="grade" name="grade"><option>Mangkuk Putih Imperial 5A</option><option>Mangkuk Emas 5A</option><option>Sarang Darah</option><option>Serpih Dapur</option><option>Lot ekspor</option><option>NestWorld 100 ml</option></select></div>
+        <div class="full"><label for="note">Volume, kota kirim, dan catatan</label><textarea id="note" name="note" placeholder="Contoh: 8 kg mangkuk putih, Jakarta."></textarea></div>
+        <div class="full"><button class="btn" type="submit">Kirim permintaan</button><p class="note" id="form-status"></p></div>
+      </form>
+    </div>
+  </section>
+  <footer><div>Omniworld · PT Omni World · Jakarta</div><div>omniworld.shop</div></footer>
+  <script src="js/tracker.js"></script>
+  <script>
+    document.getElementById("alloc-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (window.OmniTracker) OmniTracker.trackClick("inquiry");
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const body = encodeURIComponent("Nama: " + data.name + "\nPerusahaan: " + data.company + "\nEmail: " + data.email + "\nWhatsApp: " + data.whatsapp + "\nMeja: " + data.desk + "\nGrade: " + data.grade + "\nCatatan:\n" + data.note);
+      document.getElementById("form-status").textContent = "Permintaan disiapkan ke email meja.";
+      location.href = "mailto:hello@omniworld.shop?subject=" + encodeURIComponent("Alokasi Omniworld — " + data.grade) + "&body=" + body;
+    });
+  </script>
+</body>
+</html>
